@@ -25,6 +25,9 @@ export const FootballResults = defineStore('football-results', () => {
   ]);
   const actualCountry= ref("1");
 
+  const isOpen = computed(() => fullResultsDisplayed.value)
+  const getAvailableCountries = computed(() => availableCountries.value)
+
   const footballFirstLeagueMainPositionsList = computed(() => {
     if(footballFirstLeagueMainPositions.value.table === undefined ){
       return footballFirstLeagueMainPositionsToShow.value;
@@ -47,8 +50,9 @@ export const FootballResults = defineStore('football-results', () => {
     fullResultsDisplayed.value = !fullResultsDisplayed.value;
   }
 
-  function changeCountry(countryId: string) {
-    actualCountry.value = countryId;
+  async function changeCountry(event: string) {
+    actualCountry.value = event.id;
+    await getFootballFirstLeaguePositions();
   }
 
   async function getFootballFirstLeaguePositions() {
@@ -66,5 +70,8 @@ export const FootballResults = defineStore('football-results', () => {
     getActualCountryInfo,
     footballFirstLeagueMainPositionsList,
     footballFirstLeagueMainPositions,
+    showMoreResults,
+    isOpen,
+    getAvailableCountries,
   }
 })

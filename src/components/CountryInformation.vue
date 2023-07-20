@@ -4,15 +4,28 @@ import {FootballResults} from "@/stores/footballResults";
 
 const footballLeagueResults = FootballResults();
 
-const countryInfo = footballLeagueResults.getActualCountryInfo;
+const countryInfo =  computed(() => footballLeagueResults.getActualCountryInfo);
+const availableCountries = footballLeagueResults.getAvailableCountries;
 
 </script>
 
 <template>
-  <div class="country-info">
+  <div class="country-info" data-app>
     <h1 class="green">{{ countryInfo.countryName }}</h1>
     <h1 class="green">{{ countryInfo.leagueName }}</h1>
     <h1 class="green">{{ countryInfo.availableSeason }}</h1>
+    <v-divider></v-divider>
+    Change Country:
+    <v-select
+        :items="availableCountries"
+        label="Change Country"
+        item-text="countryName"
+        item-value="id"
+        solo
+        return-object
+        single-line
+        @input="footballLeagueResults.changeCountry"
+    ></v-select>
   </div>
 </template>
 
