@@ -94,6 +94,9 @@ h1 {
   }
 }
 
-@media (max-width: 400px) {
+@media (max-width: 420px) {
+  :deep .v-toolbar__content, .v-toolbar__extension {
+    gap: 25px;
+  }
 }
 </style>

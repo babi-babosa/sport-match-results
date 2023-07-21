@@ -13,66 +13,78 @@ const headers = ['Positions', 'Club', 'Club Name', 'Form', 'GP', 'W', 'D', 'L', 
 
 <template>
   <div class="football-main-table-list">
-    <v-simple-table
-        :headers="headers"
-        class="elevation-1"
+    <v-sheet
+        :color="`grey 'lighten-4'`"
+        class="pa-3"
     >
-      <template v-slot:default>
-        <thead>
-        <tr>
-          <th v-for="headerTitle in headers" >
-            {{ headerTitle }}
-          </th>
-        </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(footballInfo, index) in football" :key="footballInfo.idStanding"
-              :bgcolor="index < 3 ? '#efeeb4' : '#fdfdf7'">
-            <td align="center" width="5%">
-              {{ footballInfo.intRank }}
-            </td>
-            <td align="center" width="5%">
-              <img :src="footballInfo.strTeamBadge" width="30" height="30">
-            </td>
-            <td>
-              {{ footballInfo.strTeam }}
-            </td>
-            <td>
-              <FormInformation :formInformation="footballInfo.strForm" />
-            </td>
-            <td align="center" width="5%">
-              {{ footballInfo.intPlayed }}
-            </td>
-            <td align="center"  width="5%">
-              {{ footballInfo.intWin }}
-            </td>
-            <td align="center"  width="5%">
-              {{ footballInfo.intDraw }}
-            </td>
-            <td align="center"  width="5%">
-              {{ footballInfo.intLoss }}
-            </td>
-            <td align="center"  width="5%">
-              {{ footballInfo.intGoalsFor }}
-            </td>
-            <td align="center"  width="5%">
-              {{ footballInfo.intGoalsAgainst }}
-            </td>
-            <td align="center"  width="5%">
-              {{ footballInfo.intGoalDifference }}
-            </td>
-            <td align="center"  width="5%">
-              {{ footballInfo.intPoints }}
-            </td>
-          </tr>
-        </tbody>
-      </template>
-    </v-simple-table>
+      <v-skeleton-loader
+          class="mx-auto"
+          v-bind="football"
+          type="table, thead, tbody"
+          :loading="football.length === 0"
+      >
+        <v-simple-table
+            :headers="headers"
+            class="elevation-1"
+        >
+          <template v-slot:default>
+            <thead>
+            <tr>
+              <th v-for="headerTitle in headers" >
+                {{ headerTitle }}
+              </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="(footballInfo, index) in football" :key="footballInfo.idStanding"
+                :bgcolor="index < 3 ? '#efeeb4' : '#fdfdf7'">
+              <td align="center" width="5%">
+                {{ footballInfo.intRank }}
+              </td>
+              <td align="center" width="5%">
+                <img :src="footballInfo.strTeamBadge" width="30" height="30">
+              </td>
+              <td>
+                {{ footballInfo.strTeam }}
+              </td>
+              <td>
+                <FormInformation :formInformation="footballInfo.strForm" />
+              </td>
+              <td align="center" width="5%">
+                {{ footballInfo.intPlayed }}
+              </td>
+              <td align="center"  width="5%">
+                {{ footballInfo.intWin }}
+              </td>
+              <td align="center"  width="5%">
+                {{ footballInfo.intDraw }}
+              </td>
+              <td align="center"  width="5%">
+                {{ footballInfo.intLoss }}
+              </td>
+              <td align="center"  width="5%">
+                {{ footballInfo.intGoalsFor }}
+              </td>
+              <td align="center"  width="5%">
+                {{ footballInfo.intGoalsAgainst }}
+              </td>
+              <td align="center"  width="5%">
+                {{ footballInfo.intGoalDifference }}
+              </td>
+              <td align="center"  width="5%">
+                {{ footballInfo.intPoints }}
+              </td>
+            </tr>
+            </tbody>
+          </template>
+        </v-simple-table>
+      </v-skeleton-loader>
+    </v-sheet>
     <v-btn
         elevation="2"
         large
         id="show-more-button"
-        rounded="xl"
+        rounded
         color="#959db7"
         @click="footballLeagueResults.showMoreResults"
     >
