@@ -25,10 +25,10 @@ const headers = ['Positions', 'Club', 'Club Name', 'Form', 'GP', 'W', 'D', 'L', 
         </tr>
         </thead>
         <tr v-for="footballInfo in football" :key="footballInfo.idStanding">
-          <td>
+          <td align="center">
             {{ footballInfo.intRank }}
           </td>
-          <td>
+          <td align="center">
             <img :src="footballInfo.strTeamBadge">
           </td>
           <td>
@@ -37,28 +37,28 @@ const headers = ['Positions', 'Club', 'Club Name', 'Form', 'GP', 'W', 'D', 'L', 
           <td>
             {{ footballInfo.strForm }}
           </td>
-          <td>
+          <td align="center">
             {{ footballInfo.intPlayed }}
           </td>
-          <td>
+          <td align="center">
             {{ footballInfo.intWin }}
           </td>
-          <td>
+          <td align="center">
             {{ footballInfo.intDraw }}
           </td>
-          <td>
+          <td align="center">
             {{ footballInfo.intLoss }}
           </td>
-          <td>
+          <td align="center">
             {{ footballInfo.intGoalsFor }}
           </td>
-          <td>
+          <td align="center">
             {{ footballInfo.intGoalsAgainst }}
           </td>
-          <td>
-            {{ footballInfo.intGoalsDifference }}
+          <td align="center">
+            {{ footballInfo.intGoalDifference }}
           </td>
-          <td>
+          <td align="center">
             {{ footballInfo.intPoints }}
           </td>
         </tr>
@@ -77,13 +77,6 @@ const headers = ['Positions', 'Club', 'Club Name', 'Form', 'GP', 'W', 'D', 'L', 
 <style scoped>
 .football-main-table-list {
   width: 100%;
-}
-
-@media (min-width: 1024px) {
-  .greetings h1,
-  .greetings h3 {
-    display: block;
-    text-align: left;
-  }
+  padding: 0 40px 0 20px;
 }
 </style>

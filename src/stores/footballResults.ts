@@ -3,6 +3,8 @@ import { defineStore, MutationType } from 'pinia';
 
 export const FootballResults = defineStore('football-results', () => {
   const MIN_VALUES_TO_BE_PRESENTED: number = 5;
+  const VALUES_TO_ADD_PER_CLICK: number = 3;
+  let nextIndex: number = MIN_VALUES_TO_BE_PRESENTED;
 
   const footballFirstLeagueMainPositions= ref([]);
   const fullResultsDisplayed= ref(true);
@@ -33,35 +35,50 @@ export const FootballResults = defineStore('football-results', () => {
       return footballFirstLeagueMainPositionsToShow.value;
     }
 
-    if (fullResultsDisplayed.value) {
-      //hide full results
-      footballFirstLeagueMainPositionsToShow.value = footballFirstLeagueMainPositions.value.table.slice(0, MIN_VALUES_TO_BE_PRESENTED);
-    } else {
-      //display full results
-      footballFirstLeagueMainPositionsToShow.value = footballFirstLeagueMainPositions.value.table;
-    }
-
     return footballFirstLeagueMainPositionsToShow.value;
   });
 
   const getActualCountryInfo = computed(() => availableCountries.value.find(country => country.id === actualCountry.value));
 
   function showMoreResults() {
-    fullResultsDisplayed.value = !fullResultsDisplayed.value;
+    if (fullResultsDisplayed.value) {
+      if (nextIndex >= footballFirstLeagueMainPositions.value.table.length) {
+        footballFirstLeagueMainPositionsToShow.value = footballFirstLeagueMainPositions.value.table;
+        nextIndex = MIN_VALUES_TO_BE_PRESENTED;
+        fullResultsDisplayed.value = !fullResultsDisplayed.value;
+      } else {
+        if(nextIndex === MIN_VALUES_TO_BE_PRESENTED) {
+          nextIndex += VALUES_TO_ADD_PER_CLICK;
+        }
+        footballFirstLeagueMainPositionsToShow.value = footballFirstLeagueMainPositions.value.table.slice(0, nextIndex);
+        nextIndex += VALUES_TO_ADD_PER_CLICK;
+      }
+    } else {
+      //hide full results
+      nextIndex = MIN_VALUES_TO_BE_PRESENTED;
+      footballFirstLeagueMainPositionsToShow.value = footballFirstLeagueMainPositions.value.table.slice(0, nextIndex);
+      fullResultsDisplayed.value = !fullResultsDisplayed.value;
+    }
   }
 
   async function changeCountry(event: string) {
     actualCountry.value = event.id;
+    nextIndex = MIN_VALUES_TO_BE_PRESENTED;
+    footballFirstLeagueMainPositionsToShow.value = [];
+    fullResultsDisplayed.value = true;
+
     await getFootballFirstLeaguePositions();
   }
 
   async function getFootballFirstLeaguePositions() {
     const countryInfo = availableCountries.value.find(country => country.id === actualCountry.value);
-    console.log("countryInfo :: ", countryInfo);
 
     footballFirstLeagueMainPositions.value = await window.fetch(`https://www.thesportsdb.com/api/v1/json/3/lookuptable.php?l=${countryInfo.leagueId}&s=${countryInfo.availableSeason}`,{
       method: 'GET'
     }).then((r) => r.json());
+
+    footballFirstLeagueMainPositionsToShow.value = footballFirstLeagueMainPositions.value.table.slice(0, nextIndex);
+    nextIndex += VALUES_TO_ADD_PER_CLICK;
   }
 
   return {
@@ -72,6 +89,6 @@ export const FootballResults = defineStore('football-results', () => {
     footballFirstLeagueMainPositions,
     showMoreResults,
     isOpen,
-    getAvailableCountries,
+    getAvailableCountries
   }
 })

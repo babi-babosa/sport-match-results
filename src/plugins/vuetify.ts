@@ -1,3 +1,4 @@
+import '@mdi/font/css/materialdesignicons.css'
 import Vue from 'vue';
 import Vuetify from 'vuetify';
 import 'vuetify/dist/vuetify.min.css';
@@ -17,5 +18,8 @@ export default new Vuetify({
         warning: '#FFC107'
       },
     },
+  },
+  icons: {
+    iconfont: 'mdi', // default - only for display purposes
   },
 });

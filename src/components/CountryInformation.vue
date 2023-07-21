@@ -10,46 +10,90 @@ const availableCountries = footballLeagueResults.getAvailableCountries;
 </script>
 
 <template>
-  <div class="country-info" data-app>
-    <h1 class="green">{{ countryInfo.countryName }}</h1>
-    <h1 class="green">{{ countryInfo.leagueName }}</h1>
-    <h1 class="green">{{ countryInfo.availableSeason }}</h1>
-    <v-divider></v-divider>
-    Change Country:
-    <v-select
-        :items="availableCountries"
-        label="Change Country"
-        item-text="countryName"
-        item-value="id"
-        solo
-        return-object
-        single-line
-        @input="footballLeagueResults.changeCountry"
-    ></v-select>
-  </div>
+    <v-card
+        color="#454d66"
+        flat
+        tile
+        data-app
+        id="nav-bar"
+    >
+      <v-toolbar id="nav-bar-website">
+        <div class="nav-bar-main-info">
+          <v-toolbar-title>{{ countryInfo.leagueName }}</v-toolbar-title>
+
+          <h1>{{ countryInfo.countryName }}</h1>
+          <h1>{{ countryInfo.availableSeason }}</h1>
+        </div>
+
+        <v-select
+            :items="availableCountries"
+            label="Change Country"
+            item-text="countryName"
+            item-value="id"
+            solo
+            return-object
+            single-line
+            @input="footballLeagueResults.changeCountry"
+        ></v-select>
+      </v-toolbar>
+    </v-card>
 </template>
 
 <style scoped>
+#nav-bar {
+  width: 100%
+}
+
+v-toolbar::v-deep {
+  background-color: #454d66;
+  padding: 0 40px 0 20px;
+  border-radius: 0;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 20px;
+}
+
+.nav-bar-main-info {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+.v-toolbar__title,
 h1 {
   font-weight: 500;
-  font-size: 2.6rem;
-  top: -10px;
+  color: #dad873;
+  font-size: 25px;
 }
 
-h3 {
-  font-size: 1.2rem;
+:deep .v-text-field.v-text-field--solo .v-input__control {
+  max-width: 200px;
+  max-height: 50px;
+  display: flex;
 }
 
-.greetings h1,
-.greetings h3 {
-  text-align: center;
+:deep .theme--light.v-input {
+  justify-content: end;
+  margin-right: 40px;
 }
 
-@media (min-width: 1024px) {
-  .greetings h1,
-  .greetings h3 {
-    display: block;
-    text-align: left;
+:deep .v-menu__content {
+  top: 41px;
+}
+
+@media (max-width: 860px) {
+  .nav-bar-main-info {
+    display: flex;
+    flex-direction: row;
+
+    .v-toolbar__title,
+    h1 {
+      font-size: 16px;
+    }
   }
+}
+
+@media (max-width: 400px) {
 }
 </style>
