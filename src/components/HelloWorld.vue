@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import {computed} from "vue";
 import {FootballResults} from "@/stores/footballResults";
+import FormInformation from "@/components/FormInformation.vue";
 
 const footballLeagueResults = FootballResults();
 
@@ -24,49 +25,55 @@ const headers = ['Positions', 'Club', 'Club Name', 'Form', 'GP', 'W', 'D', 'L', 
           </th>
         </tr>
         </thead>
-        <tr v-for="footballInfo in football" :key="footballInfo.idStanding">
-          <td align="center">
-            {{ footballInfo.intRank }}
-          </td>
-          <td align="center">
-            <img :src="footballInfo.strTeamBadge">
-          </td>
-          <td>
-            {{ footballInfo.strTeam }}
-          </td>
-          <td>
-            {{ footballInfo.strForm }}
-          </td>
-          <td align="center">
-            {{ footballInfo.intPlayed }}
-          </td>
-          <td align="center">
-            {{ footballInfo.intWin }}
-          </td>
-          <td align="center">
-            {{ footballInfo.intDraw }}
-          </td>
-          <td align="center">
-            {{ footballInfo.intLoss }}
-          </td>
-          <td align="center">
-            {{ footballInfo.intGoalsFor }}
-          </td>
-          <td align="center">
-            {{ footballInfo.intGoalsAgainst }}
-          </td>
-          <td align="center">
-            {{ footballInfo.intGoalDifference }}
-          </td>
-          <td align="center">
-            {{ footballInfo.intPoints }}
-          </td>
-        </tr>
+        <tbody>
+          <tr v-for="(footballInfo, index) in football" :key="footballInfo.idStanding"
+              :bgcolor="index < 3 ? '#efeeb4' : '#fdfdf7'">
+            <td align="center" width="5%">
+              {{ footballInfo.intRank }}
+            </td>
+            <td align="center" width="5%">
+              <img :src="footballInfo.strTeamBadge" width="30" height="30">
+            </td>
+            <td>
+              {{ footballInfo.strTeam }}
+            </td>
+            <td>
+              <FormInformation :formInformation="footballInfo.strForm" />
+            </td>
+            <td align="center" width="5%">
+              {{ footballInfo.intPlayed }}
+            </td>
+            <td align="center"  width="5%">
+              {{ footballInfo.intWin }}
+            </td>
+            <td align="center"  width="5%">
+              {{ footballInfo.intDraw }}
+            </td>
+            <td align="center"  width="5%">
+              {{ footballInfo.intLoss }}
+            </td>
+            <td align="center"  width="5%">
+              {{ footballInfo.intGoalsFor }}
+            </td>
+            <td align="center"  width="5%">
+              {{ footballInfo.intGoalsAgainst }}
+            </td>
+            <td align="center"  width="5%">
+              {{ footballInfo.intGoalDifference }}
+            </td>
+            <td align="center"  width="5%">
+              {{ footballInfo.intPoints }}
+            </td>
+          </tr>
+        </tbody>
       </template>
     </v-simple-table>
     <v-btn
         elevation="2"
         large
+        id="show-more-button"
+        rounded="xl"
+        color="#959db7"
         @click="footballLeagueResults.showMoreResults"
     >
       Show {{isOpen ? 'More' : 'Less' }} Results
@@ -79,4 +86,23 @@ const headers = ['Positions', 'Club', 'Club Name', 'Form', 'GP', 'W', 'D', 'L', 
   width: 100%;
   padding: 0 40px 0 20px;
 }
+
+:deep thead th {
+  background-color: #2c3e50;
+  color: #efeeb4 !important;
+  font-size: 20px !important;
+  font-weight: bold !important;
+}
+
+:deep tbody tr:hover {
+  opacity: 0.8;
+  cursor: pointer;
+}
+
+#show-more-button {
+  margin: 20px auto;
+  width: 100%;
+  color: #fdfdf7;
+}
+
 </style>

@@ -77,9 +77,18 @@ export const FootballResults = defineStore('football-results', () => {
       method: 'GET'
     }).then((r) => r.json());
 
+    _dealWithFormResults();
+
     footballFirstLeagueMainPositionsToShow.value = footballFirstLeagueMainPositions.value.table.slice(0, nextIndex);
     nextIndex += VALUES_TO_ADD_PER_CLICK;
   }
+
+  function _dealWithFormResults() {
+    footballFirstLeagueMainPositions.value.table.forEach(club => {
+      club.strForm = club.strForm.trim().split('');
+    })
+  }
+
 
   return {
     getFootballFirstLeaguePositions,

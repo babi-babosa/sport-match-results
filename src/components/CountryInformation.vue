@@ -21,8 +21,8 @@ const availableCountries = footballLeagueResults.getAvailableCountries;
         <div class="nav-bar-main-info">
           <v-toolbar-title>{{ countryInfo.leagueName }}</v-toolbar-title>
 
-          <h1>{{ countryInfo.countryName }}</h1>
-          <h1>{{ countryInfo.availableSeason }}</h1>
+          <h1 v-if="!$vuetify.breakpoint.xs">{{ countryInfo.countryName }}</h1>
+          <h1 v-if="!$vuetify.breakpoint.xs">{{ countryInfo.availableSeason }}</h1>
         </div>
 
         <v-select
