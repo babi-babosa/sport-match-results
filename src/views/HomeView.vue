@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import ProductsList from "@/components/ProductsList.vue";
+import ClubsList from "@/components/ClubsList.vue";
 </script>
 
 <template>
   <main>
-    <ProductsList />
+    <ClubsList />
   </main>
 </template>
