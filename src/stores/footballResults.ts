@@ -1,15 +1,40 @@
 import { ref, computed } from 'vue'
 import { defineStore, MutationType } from 'pinia';
 
+interface FootballResultsList {
+  idStanding: string,
+  intRank: string,
+  strTeamBadge: string,
+  strTeam: string,
+  strForm: string,
+  strFormRefactor: string[],
+  intPlayed: string,
+  intWin: string,
+  intDraw: string,
+  intLoss: string,
+  intGoalsFor: string,
+  intGoalsAgainst: string,
+  intGoalDifference: string,
+  intPoints: string,
+}
+
+interface CountryInformation {
+  countryName: string,
+  leagueId: string,
+  availableSeason: string,
+  leagueName: string,
+  id: string
+}
+
 export const FootballResults = defineStore('football-results', () => {
   const MIN_VALUES_TO_BE_PRESENTED: number = 5;
   const VALUES_TO_ADD_PER_CLICK: number = 3;
   let nextIndex: number = MIN_VALUES_TO_BE_PRESENTED;
 
-  const footballFirstLeagueMainPositions= ref([]);
+  const footballFirstLeagueMainPositions = ref([]);
   const fullResultsDisplayed= ref(true);
   const footballFirstLeagueMainPositionsToShow= ref([]);
-  const availableCountries= ref([
+  const availableCountries = ref([
     {
       countryName: "England",
       leagueId: '4328',
@@ -31,7 +56,7 @@ export const FootballResults = defineStore('football-results', () => {
   const getAvailableCountries = computed(() => availableCountries.value)
 
   const footballFirstLeagueMainPositionsList = computed(() => {
-    if(footballFirstLeagueMainPositions.value.table === undefined ){
+    if(footballFirstLeagueMainPositions.value === undefined ){
       return footballFirstLeagueMainPositionsToShow.value;
     }
 
@@ -42,21 +67,21 @@ export const FootballResults = defineStore('football-results', () => {
 
   function showMoreResults() {
     if (fullResultsDisplayed.value) {
-      if (nextIndex >= footballFirstLeagueMainPositions.value.table.length) {
-        footballFirstLeagueMainPositionsToShow.value = footballFirstLeagueMainPositions.value.table;
+      if (nextIndex >= footballFirstLeagueMainPositions.value.length) {
+        footballFirstLeagueMainPositionsToShow.value = footballFirstLeagueMainPositions.value;
         nextIndex = MIN_VALUES_TO_BE_PRESENTED;
         fullResultsDisplayed.value = !fullResultsDisplayed.value;
       } else {
         if(nextIndex === MIN_VALUES_TO_BE_PRESENTED) {
           nextIndex += VALUES_TO_ADD_PER_CLICK;
         }
-        footballFirstLeagueMainPositionsToShow.value = footballFirstLeagueMainPositions.value.table.slice(0, nextIndex);
+        footballFirstLeagueMainPositionsToShow.value = footballFirstLeagueMainPositions.value.slice(0, nextIndex);
         nextIndex += VALUES_TO_ADD_PER_CLICK;
       }
     } else {
       //hide full results
       nextIndex = MIN_VALUES_TO_BE_PRESENTED;
-      footballFirstLeagueMainPositionsToShow.value = footballFirstLeagueMainPositions.value.table.slice(0, nextIndex);
+      footballFirstLeagueMainPositionsToShow.value = footballFirstLeagueMainPositions.value.slice(0, nextIndex);
       fullResultsDisplayed.value = !fullResultsDisplayed.value;
     }
   }
@@ -71,22 +96,38 @@ export const FootballResults = defineStore('football-results', () => {
   }
 
   async function getFootballFirstLeaguePositions() {
-    const countryInfo = availableCountries.value.find(country => country.id === actualCountry.value);
+    const countryInfo: CountryInformation = availableCountries.value.find(country => country.id === actualCountry.value);
 
-    footballFirstLeagueMainPositions.value = await window.fetch(`https://www.thesportsdb.com/api/v1/json/3/lookuptable.php?l=${countryInfo.leagueId}&s=${countryInfo.availableSeason}`,{
+    const returnValues = await window.fetch(`https://www.thesportsdb.com/api/v1/json/3/lookuptable.php?l=${countryInfo.leagueId}&s=${countryInfo.availableSeason}`,{
       method: 'GET'
     }).then((r) => r.json());
 
-    _dealWithFormResults();
+    footballFirstLeagueMainPositions.value = returnValues.table.map((result: FootballResultsList) => {
+      const footballList:FootballResultsList = {
+        idStanding: result.idStanding,
+        intRank: result.intRank,
+        strTeamBadge: result.strTeamBadge,
+        strTeam: result.strTeam,
+        strForm: result.strForm,
+        strFormRefactor: _dealWithFormResults(result.strForm),
+        intPlayed: result.intPlayed,
+        intWin: result.intWin,
+        intDraw: result.intDraw,
+        intLoss: result.intLoss,
+        intGoalsFor: result.intGoalsFor,
+        intGoalsAgainst: result.intGoalsAgainst,
+        intGoalDifference: result.intGoalDifference,
+        intPoints: result.intPoints,
+      }
+      return footballList;
+    });
 
-    footballFirstLeagueMainPositionsToShow.value = footballFirstLeagueMainPositions.value.table.slice(0, nextIndex);
+    footballFirstLeagueMainPositionsToShow.value = footballFirstLeagueMainPositions.value.slice(0, nextIndex);
     nextIndex += VALUES_TO_ADD_PER_CLICK;
   }
 
-  function _dealWithFormResults() {
-    footballFirstLeagueMainPositions.value.table.forEach(club => {
-      club.strForm = club.strForm.trim().split('');
-    })
+  function _dealWithFormResults(clubForm: string): string[] {
+    return clubForm.trim().split('');
   }
 
 

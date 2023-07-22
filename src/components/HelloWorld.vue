@@ -48,7 +48,7 @@ const headers = ['Positions', 'Club', 'Club Name', 'Form', 'GP', 'W', 'D', 'L', 
                 {{ footballInfo.strTeam }}
               </td>
               <td>
-                <FormInformation :formInformation="footballInfo.strForm" />
+                <FormInformation :formInformation="footballInfo.strFormRefactor" />
               </td>
               <td align="center" width="5%">
                 {{ footballInfo.intPlayed }}
