@@ -26,8 +26,8 @@ const headers = [
 ];
 
 const clickTo = (idTeam: string) => {
-  window.location.href = `https://www.thesportsdb.com/team/${idTeam}`
-}
+  window.location.href = `https://www.thesportsdb.com/team/${idTeam}`;
+};
 </script>
 
 <template>
@@ -53,7 +53,7 @@ const clickTo = (idTeam: string) => {
                 v-for="(footballInfo, index) in football"
                 :key="footballInfo.idStanding"
                 :bgcolor="index < 3 ? '#efeeb4' : '#fdfdf7'"
-                @click="clickTo(footballInfo.idTeam);"
+                @click="clickTo(footballInfo.idTeam)"
               >
                 <td align="center" width="5%">
                   {{ footballInfo.intRank }}
