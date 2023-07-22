@@ -1,7 +1,7 @@
 import { ref, computed } from 'vue'
 import { defineStore, MutationType } from 'pinia';
 
-interface FootballResultsList {
+export interface FootballResultsList {
   idStanding: string,
   intRank: string,
   strTeamBadge: string,
@@ -18,7 +18,7 @@ interface FootballResultsList {
   intPoints: string,
 }
 
-interface CountryInformation {
+export interface CountryInformation {
   countryName: string,
   leagueId: string,
   availableSeason: string,
@@ -30,11 +30,27 @@ export const FootballResults = defineStore('football-results', () => {
   const MIN_VALUES_TO_BE_PRESENTED: number = 5;
   const VALUES_TO_ADD_PER_CLICK: number = 3;
   let nextIndex: number = MIN_VALUES_TO_BE_PRESENTED;
+  const defaultValue: FootballResultsList[] = [{
+    idStanding: "",
+    intRank: "",
+    strTeamBadge: "",
+    strTeam: "",
+    strForm: "",
+    strFormRefactor: [],
+    intPlayed: "",
+    intWin: "",
+    intDraw: "",
+    intLoss: "",
+    intGoalsFor: "",
+    intGoalsAgainst: "",
+    intGoalDifference: "",
+    intPoints: "",
+  }]
 
-  const footballFirstLeagueMainPositions = ref([]);
+  const footballFirstLeagueMainPositions = ref<FootballResultsList[]>(defaultValue);
   const fullResultsDisplayed= ref(true);
-  const footballFirstLeagueMainPositionsToShow= ref([]);
-  const availableCountries = ref([
+  const footballFirstLeagueMainPositionsToShow= ref<FootballResultsList[]>([]);
+  const availableCountries = ref<CountryInformation[]>([
     {
       countryName: "England",
       leagueId: '4328',
@@ -50,12 +66,12 @@ export const FootballResults = defineStore('football-results', () => {
       id: '2'
     }
   ]);
-  const actualCountry= ref("1");
+  const actualCountry= ref<string>("1");
 
-  const isOpen = computed(() => fullResultsDisplayed.value)
-  const getAvailableCountries = computed(() => availableCountries.value)
+  const isOpen = computed<boolean>(() => fullResultsDisplayed.value)
+  const getAvailableCountries = computed<CountryInformation[]>(() => availableCountries.value)
 
-  const footballFirstLeagueMainPositionsList = computed(() => {
+  const footballFirstLeagueMainPositionsList = computed<FootballResultsList[]>(() => {
     if(footballFirstLeagueMainPositions.value === undefined ){
       return footballFirstLeagueMainPositionsToShow.value;
     }
@@ -63,7 +79,7 @@ export const FootballResults = defineStore('football-results', () => {
     return footballFirstLeagueMainPositionsToShow.value;
   });
 
-  const getActualCountryInfo = computed(() => availableCountries.value.find(country => country.id === actualCountry.value));
+  const getActualCountryInfo = computed(() => availableCountries.value.find(country => country.id === actualCountry.value) as CountryInformation);
 
   function showMoreResults() {
     if (fullResultsDisplayed.value) {
@@ -86,7 +102,7 @@ export const FootballResults = defineStore('football-results', () => {
     }
   }
 
-  async function changeCountry(event: string) {
+  async function changeCountry(event: any) {
     actualCountry.value = event.id;
     nextIndex = MIN_VALUES_TO_BE_PRESENTED;
     footballFirstLeagueMainPositionsToShow.value = [];
@@ -96,7 +112,7 @@ export const FootballResults = defineStore('football-results', () => {
   }
 
   async function getFootballFirstLeaguePositions() {
-    const countryInfo: CountryInformation = availableCountries.value.find(country => country.id === actualCountry.value);
+    const countryInfo= availableCountries.value.find(country => country.id === actualCountry.value) as CountryInformation;
 
     const returnValues = await window.fetch(`https://www.thesportsdb.com/api/v1/json/3/lookuptable.php?l=${countryInfo.leagueId}&s=${countryInfo.availableSeason}`,{
       method: 'GET'

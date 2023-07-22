@@ -4,7 +4,7 @@ import {FootballResults} from "@/stores/footballResults";
 
 const footballLeagueResults = FootballResults();
 
-const countryInfo =  computed(() => footballLeagueResults.getActualCountryInfo);
+const countryInfo = computed(() => footballLeagueResults.getActualCountryInfo);
 const availableCountries = footballLeagueResults.getAvailableCountries;
 
 </script>
