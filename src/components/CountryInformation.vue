@@ -1,47 +1,42 @@
 <script setup lang="ts">
-import {computed} from "vue";
-import {FootballResults} from "@/stores/footballResults";
+import { computed } from "vue";
+import { FootballResults } from "@/stores/footballResults";
 
 const footballLeagueResults = FootballResults();
 
 const countryInfo = computed(() => footballLeagueResults.getActualCountryInfo);
 const availableCountries = footballLeagueResults.getAvailableCountries;
-
 </script>
 
 <template>
-    <v-card
-        color="#454d66"
-        flat
-        tile
-        data-app
-        id="nav-bar"
-    >
-      <v-toolbar id="nav-bar-website">
-        <div class="nav-bar-main-info">
-          <v-toolbar-title>{{ countryInfo.leagueName }}</v-toolbar-title>
+  <v-card color="#454d66" flat tile data-app id="nav-bar">
+    <v-toolbar id="nav-bar-website">
+      <div class="nav-bar-main-info">
+        <v-toolbar-title>{{ countryInfo.leagueName }}</v-toolbar-title>
 
-          <h1 v-if="!$vuetify.breakpoint.xs">{{ countryInfo.countryName }}</h1>
-          <h1 v-if="!$vuetify.breakpoint.xs">{{ countryInfo.availableSeason }}</h1>
-        </div>
+        <h1 v-if="!$vuetify.breakpoint.xs">{{ countryInfo.countryName }}</h1>
+        <h1 v-if="!$vuetify.breakpoint.xs">
+          {{ countryInfo.availableSeason }}
+        </h1>
+      </div>
 
-        <v-select
-            :items="availableCountries"
-            label="Change Country"
-            item-text="countryName"
-            item-value="id"
-            solo
-            return-object
-            single-line
-            @input="footballLeagueResults.changeCountry"
-        ></v-select>
-      </v-toolbar>
-    </v-card>
+      <v-select
+        :items="availableCountries"
+        label="Change Country"
+        item-text="countryName"
+        item-value="id"
+        solo
+        return-object
+        single-line
+        @input="footballLeagueResults.changeCountry"
+      ></v-select>
+    </v-toolbar>
+  </v-card>
 </template>
 
 <style scoped>
 #nav-bar {
-  width: 100%
+  width: 100%;
 }
 
 v-toolbar::v-deep {
@@ -95,7 +90,8 @@ h1 {
 }
 
 @media (max-width: 420px) {
-  :deep .v-toolbar__content, .v-toolbar__extension {
+  :deep .v-toolbar__content,
+  .v-toolbar__extension {
     gap: 25px;
   }
 }

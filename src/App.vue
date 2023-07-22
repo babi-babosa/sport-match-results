@@ -13,7 +13,6 @@ import CountryInformation from "@/components/CountryInformation.vue";
 </template>
 
 <style scoped>
-
 @media (min-width: 1024px) {
   header {
     display: flex;

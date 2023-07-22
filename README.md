@@ -1,28 +1,50 @@
-# sport-match-results
-This is a web application to show a list of futball league results made with Vue 2.
+# Sport Match Results
+Hi all, my name is Bárbara and this is my project about sports results.
 
-# vue-project
+This is a web application to show a list of football league results made with Vue 2. The main goal is to create a solution to show a list of results of a league.
 
-This template should help get you started developing with Vue 3 in Vite.
+# Vue Project
 
-## Recommended IDE Setup
+This project is made with the latest Vue 2 version (2.7) and it includes already some extensions that will be used in Vue 3, such as Vite and Pinia.
+This is also made with Typescript in order to use interfaces and clear code to validate the data we have in the store.
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+## Technical decisions
+It was made a validation of the following [API](https://www.thesportsdb.com/api.php) , in order to understand what could be the requests available for free - some of them are only available if we have Patreon.
 
-## Type Support for `.vue` Imports in TS
+After a quick investigation, the conclusion for this case is that the main parameters to have the league results are:
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
+```sh
+  https://www.thesportsdb.com/api/v1/json/3/lookuptable.php?l=4328&s=2022-2023
+```
+- l :: leagueID - it can be checked by another API request.
+- s :: season - season of our choice and I update the results to the latest season. 
 
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
+The season and the league are not available to be changed, but are the most important leagues from each country (You can read more in the next section). 
 
-1. Disable the built-in TypeScript Extension
-    1) Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-    2) Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
+In this repo you can also find commits of each improvement.
 
-## Customize configuration
+For responsive effects, in mobile the main bar info will only display the league name. This was made to not include a menu, because the informations will be text and not buttons to click and redirect to different pages.
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+About the chosen colors, the base was a color pallet generator to give a better style and consistence to the page.
+
+It was implemented routes, but in this case there's only the main page route and the 404 Page.
+
+All files were reviewed and have lint corrections.
+
+## Nice To Have implementations
+In the project, there is a show more button, that loads the next 3 clubs until the list ends (the result list length will depend of the country).
+
+Another point is the skeleton on the table results that will appear until the result be populated.
+
+A surprise feature is a hover effect in each table row to not lose the focus on the club we are checking results and a feature to change country between England and my country, Portugal. 
+For both, it will display the results from the premier league: England Premier League and Portuguese Premier League, depending of the selected country.
+
+The first 3 positions are in a different color to give a UX to the user to check the main qualifications.
+
+Another feature is a click to the main link for team information - if the user clicks in a team row it will be redirected to the main team information page with the link : https://www.thesportsdb.com/team/TEAM_ID .
+
+## Future Improvements
+For future improvements, I can add the colors into the main css configuration in order to change the primary main colors. This was not implemented now due the small project. 
 
 ## Project Setup
 
@@ -34,25 +56,6 @@ npm install
 
 ```sh
 npm run dev
-```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Run Headed Component Tests with [Cypress Component Testing](https://on.cypress.io/component)
-
-```sh
-npm run test:unit # or `npm run test:unit:ci` for headless testing
-```
-
-### Run End-to-End Tests with [Cypress](https://www.cypress.io/)
-
-```sh
-npm run build
-npm run test:e2e # or `npm run test:e2e:ci` for headless testing
 ```
 
 ### Lint with [ESLint](https://eslint.org/)

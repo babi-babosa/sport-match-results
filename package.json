@@ -14,6 +14,7 @@
     "type-check": "vue-tsc --noEmit"
   },
   "dependencies": {
+    "@vue/cli-service": "^5.0.8",
     "pinia": "^2.0.16",
     "roboto-fontface": "*",
     "vue": "^2.7.14",
